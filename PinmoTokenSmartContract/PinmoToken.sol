@@ -118,7 +118,7 @@ contract PinmoToken is AbstractToken
         returns (bool success)
     {
         if (frozen) return false;
-        else return AbstractToken.transfer (_to, _value);
+        else return abstractToken.transfer (_to, _value);
     }
     
     /**
@@ -141,7 +141,7 @@ contract PinmoToken is AbstractToken
         returns (bool success)
     {
         if (frozen) return false;
-        else return AbstractToken.transferFrom (_from, _to, _value);
+        else return abstractToken.transferFrom (_from, _to, _value);
     }
   
     /**
@@ -164,8 +164,8 @@ contract PinmoToken is AbstractToken
         public 
         returns (bool success)
     {
-        if (allowance (msg.sender, _spender) == _currentValue) // TODO: AbstractToken.allowance...
-        return approve (_spender, _newValue); // TODO: AbstractToken.approve...
+        if (abstractToken.allowance (msg.sender, _spender) == _currentValue)
+        return abstractToken.approve (_spender, _newValue);
         else return false;
     }
 

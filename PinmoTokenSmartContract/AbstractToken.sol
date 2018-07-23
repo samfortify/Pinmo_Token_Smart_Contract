@@ -43,8 +43,8 @@ contract AbstractToken
     */ 
     function allowance (
         address _owner, 
-        address _spender)
-        
+        address _spender
+        )
         public 
         view 
         returns (uint256 remaining)
