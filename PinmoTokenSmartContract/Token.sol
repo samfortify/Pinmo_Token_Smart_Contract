@@ -62,11 +62,16 @@ contract Token {
     * @return true if the token transfer was approved and false if not
     */ 
     function approve (
+        address _owner,
         address _spender, 
         uint256 _value
         )
         public 
-        returns (bool success);
+        returns (bool success)
+    {
+        emit Approval(_owner, _spender, _value);
+        return true;
+    }
         
     /**
     * Transfer a number of tokens from the sender address to the given recipient

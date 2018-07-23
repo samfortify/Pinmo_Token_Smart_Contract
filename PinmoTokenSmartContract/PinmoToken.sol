@@ -24,6 +24,12 @@ contract PinmoToken is AbstractToken
     bool frozen = false;
     
     /**
+    * Using previously deployed abstract token
+    * 
+    */ 
+    AbstractToken abstractToken;
+
+    /**
     * Create a new Pinmo Token Smart Contract with the total amount of tokens
     * issued and a given msg.sender, as well, this makes the msg.sender the
     * owner of this smart contract
@@ -32,12 +38,14 @@ contract PinmoToken is AbstractToken
     * msg.sender
     */ 
     constructor (
-        uint256 _tokenCount
+        uint256 _tokenCount,
+        address _abstractToken
         ) 
         public
     {
+        abstractToken = AbstractToken(_abstractToken);
         owner = msg.sender;
-        _tokenCount = _tokenCount;
+        tokenCount = _tokenCount;
         accounts [msg.sender] = _tokenCount;
     }
     

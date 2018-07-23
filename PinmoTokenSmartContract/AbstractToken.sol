@@ -1,14 +1,15 @@
 pragma solidity ^0.4.24;
 
-import "./Token.sol";
 import "./SafeMath.sol";
 
 /**
 * Abstract Token SmartContract that could be used as a base contract for 
 * ERC-20 token contracts
 */ 
-contract AbstractToken is Token, SafeMath 
+contract AbstractToken 
 {
+    using SafeMath for uint256;
+
     /**
     * Create a new Abstract Token Contract
     * Constructor that does nothing
@@ -118,8 +119,8 @@ contract AbstractToken is Token, SafeMath
         if (fromBalance < _value) return false;
         if (_value > 0 && msg.sender != _to)
         {
-            accounts [msg.sender] = substract (fromBalance, _value);
-            accounts [_to] = addition (toBalance, _value);
+            accounts [msg.sender] = fromBalance.substract (_value);
+            accounts [_to] = toBalance.addition (_value);
         }
         emit Transfer (msg.sender, _to, _value);
         return true;
@@ -154,14 +155,49 @@ contract AbstractToken is Token, SafeMath
         uint256 fromBalance = accounts [_from];
         if (fromBalance < _value) return false;
 
-        allowances [_from][msg.sender] = substract (spenderAllowance, _value); // TODO: Move to line 134, save gas?
-
         if (_value > 0 && _from != _to)
         {
-            accounts [_from] = substract (fromBalance, _value);
-            accounts [_to] = addition (accounts [_to], _value);
+            allowances [_from][msg.sender] = spenderAllowance.substract (_value);
+            accounts [_from] = fromBalance.substract (_value);
+            accounts [_to] = accounts [_to].addition (_value);
         }
         emit Transfer (_from, _to, _value);
         return true;
     }
+
+       /**
+    * Event to log when tokens are transfer from one user to another
+    * 
+    * @param _from address of the original owner of the tokens
+    * 
+    * @param _to address of the new owner of the tokens
+    * 
+    * @param _value total amount of tokens that were transfered in this
+    * transaction
+    */  
+    event Transfer (
+        address indexed _from, 
+        address indexed _to, 
+        uint256 _value
+    );
+    
+    /**
+    * Event to log when the owner approved the transfer of the tokens to a
+    * given owner
+    * 
+    * @param _owner address of the original owner of the tokens that got
+    * trasnfered
+    * 
+    * @param _spender address of who was allowed to transfer the tokens that
+    * belonged to the owner
+    * 
+    * @param _value number of tokens that were approved to be transfer by the
+    * original owner
+    *  
+    */ 
+    event Approval (
+        address indexed _owner, 
+        address indexed _spender, 
+        uint256 _value
+    );
 }

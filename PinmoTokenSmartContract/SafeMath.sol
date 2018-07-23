@@ -8,9 +8,9 @@ pragma solidity ^0.4.24;
 /**
 * Math operations with safety checks that throw on error
 */ 
-contract SafeMath
+library SafeMath
 {
-    uint256 constant private MAX_UINT256 =
+    uint256 constant internal MAX_UINT256 =
     0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF;
     
     /**
@@ -28,9 +28,9 @@ contract SafeMath
         )
         pure 
         internal
-        returns (uint256 z)
+        returns (uint256)
     {
-        assert (x <= MAX_UINT256 - y); // TODO: (x + y <= MAX_UINT256)?
+        assert (x + y <= MAX_UINT256);
         return x + y;
     }
       
@@ -49,7 +49,7 @@ contract SafeMath
         )
         pure 
         internal
-        returns (uint256 z)
+        returns (uint256)
     {
         assert (x >= y);
         return x - y;
@@ -70,10 +70,10 @@ contract SafeMath
         )
         pure 
         internal
-        returns (uint256 z)
+        returns (uint256)
     {
         if (y == 0) return 0; // Prevent division by zero at the next line
-        assert (x <= MAX_UINT256 / y); // TODO: (x * y <= MAX_UINT256)?
+        assert (x * y <= MAX_UINT256);
         return x * y;
     }
 }
